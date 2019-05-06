@@ -1,92 +1,93 @@
-variable "ecs_region"
+variable "region"
 {
-  default = "us-east-1"
+  default = "eu-central-1"
+}
+
+variable "zone"
+{
+  default = "eu-central-1a"
 }
 
 variable "ecs_cluster_name" {
-  default = "ecs_test_cluster_hyperflow"
+  default = "cluster-hyperflow"
 }
 
-#address to influx db
-#example default = "http://ec2-18-219-231-96.us-east-2.compute.amazonaws.com:8086/hyperflow_tests"
-#http://<url>:8086/<database>
-variable "influx_db_url"
-{
-  default = ""
+variable "hflow_image_uri" {
+  default = "511281668954.dkr.ecr.eu-central-1.amazonaws.com/hyperflow:0.20"
 }
 
-variable "launch_config_instance_type" {
-  default = "t2.micro"
+variable "hflow_container_name" {
+  default = "hyperflow"
 }
 
-variable "asg_min" {
-  default = 0
+variable "hflow_log_group" {
+  default = "/ecs/hyperflow-worker"
 }
 
-variable "asg_max" {
-  default = 5
+variable "hflow_worker_family" {
+  default = "hyperflow-worker"
 }
 
-variable "asg_desired" {
-  default = 0
+variable "pushgateway_image_uri" {
+  default = "docker.io/prom/pushgateway:latest"
 }
 
-variable "aws_ecs_service_worker_desired_count"
-{
-  default = 2
+variable "pushgateway_container_name" {
+  default = "pushgateway"
 }
 
-variable "worker_scaling_adjustment"
-{
-  default = 1
+variable "pushgateway_log_group" {
+  default = "/ecs/pushgateway"
 }
 
-variable "ec2_instance_scaling_adjustment"
-{
-  default = 1
+variable "pushgateway_family" {
+  default = "pushgateway"
 }
 
-variable "ecs_ami_id" {
-  default = "ami-cad827b7"
+variable "prometheus_image_uri" {
+  default = "511281668954.dkr.ecr.eu-central-1.amazonaws.com/prometheus:0.2"
 }
 
-variable "key_pair_name" {
-  default = ""
+variable "prometheus_container_name" {
+  default = "prometheus"
 }
 
-
-variable "ACCESS_KEY"
-{
-  default = ""
+variable "prometheus_log_group" {
+  default = "/ecs/prometheus"
 }
 
-variable "SECRET_ACCESS_KEY"
-{
-  default = ""
+variable "prometheus_family" {
+  default = "prometheus"
 }
 
-variable "hyperflow_master_container"
-{
-  default = "krysp89/hyperflow-master-plugin:latest"
+variable "grafana_image_uri" {
+  default = "511281668954.dkr.ecr.eu-central-1.amazonaws.com/grafana:0.1"
 }
 
-variable "hyperflow_worker_container"
-{
-  default = "krysp89/hyperflow-worker-nfs:latest"
+variable "grafana_container_name" {
+  default = "grafana"
 }
 
-variable "ec2_status_reporter"
-{
-  default = "krysp89/hyperflow-ec2-status-reporter:latest"
+variable "grafana_log_group" {
+  default = "/ecs/grafana"
 }
 
-#change to "ENABLED" for feature to start working 
-variable "feature_download"
-{
+variable "grafana_family" {
+  default = "grafana"
+}
+
+variable "s3_full_access_policy_arn" {
+  default = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
+variable "cloud_map_instance_access_policy_arn" {
+  default = "arn:aws:iam::aws:policy/AWSCloudMapRegisterInstanceAccess"
+}
+
+variable "ecs_task_execution_policy_arn" {
+  default = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+variable "assign_public_ip" {
   default = "DISABLED"
-}
-
-variable "nfs_mount"
-{
-  default = ""
 }

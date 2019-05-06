@@ -1,0 +1,18 @@
+[
+  {
+    "name": "${container_name}",
+    "image": "${image_uri}",
+    "essential": true,
+    "cpu": 0,
+    "memoryReservation": 300,
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "secretOptions": null,
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${region}",
+        "awslogs-stream-prefix": "ecs"
+      }
+    }
+  }
+]

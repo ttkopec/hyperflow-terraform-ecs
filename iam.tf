@@ -1,25 +1,55 @@
-#Iam roles, profiles, policy
-resource "aws_iam_role" "ecs_service" {
-  name = "hyperflow-instecs-serviceance-role"
-  assume_role_policy = "${file("ecs-service-role.json")}"
+data "aws_iam_policy" "ecs_task_execution_policy" {
+  arn = "${var.ecs_task_execution_policy_arn}"
 }
 
-resource "aws_iam_role" "app_instance" {
-  name = "hyperflow-instance-role"
-  assume_role_policy = "${file("ec2-instance-role.json")}"
+data "aws_iam_policy" "s3_full_access_policy" {
+  arn = "${var.s3_full_access_policy_arn}"
 }
 
-resource "aws_iam_instance_profile" "app" {
-  name  = "hyperflow-instance-profile"
-  role = "${aws_iam_role.app_instance.name}"
+data "aws_iam_policy" "cloud_map_instance_access_policy" {
+  arn = "${var.cloud_map_instance_access_policy_arn}"
 }
 
-data "template_file" "instance_profile" {
-  template = "${file("ecs-profile-policy.json")}"
+# role for hyperflow workers
+resource "aws_iam_role" "hflow_worker_role" {
+  name_prefix = "hflowWorkerRole"
+  assume_role_policy = "${file("${path.module}/ecs-task-execution-role.json")}"
 }
 
-resource "aws_iam_role_policy" "instance" {
-  name   = "ECSInstanceRole"
-  role   = "${aws_iam_role.app_instance.name}"
-  policy = "${data.template_file.instance_profile.rendered}"
+# attach policies to newly created role
+resource "aws_iam_role_policy_attachment" "attach_ecs_policy_to_worker" {
+  policy_arn = "${data.aws_iam_policy.ecs_task_execution_policy.arn}"
+  role = "${aws_iam_role.hflow_worker_role.name}"
+}
+
+resource "aws_iam_role_policy_attachment" "attach_s3_policy_to_worker" {
+  policy_arn = "${data.aws_iam_policy.s3_full_access_policy.arn}"
+  role = "${aws_iam_role.hflow_worker_role.name}"
+}
+
+# role for entities using dns service discovery
+resource "aws_iam_role" "dns_discoverable_role" {
+  name_prefix = "dnsDiscoverableRole"
+  assume_role_policy = "${file("${path.module}/ecs-task-execution-role.json")}"
+}
+
+resource "aws_iam_role_policy_attachment" "attach_ecs_policy_to_discoverable" {
+  policy_arn = "${data.aws_iam_policy.ecs_task_execution_policy.arn}"
+  role = "${aws_iam_role.dns_discoverable_role.name}"
+}
+
+resource "aws_iam_role_policy_attachment" "attach_cloud_map_policy_to_discoverable" {
+  policy_arn = "${data.aws_iam_policy.cloud_map_instance_access_policy.arn}"
+  role = "${aws_iam_role.dns_discoverable_role.name}"
+}
+
+# simple role for ecs tasks
+resource "aws_iam_role" "ecs_task_execution_role" {
+  name_prefix = "ecsTaskExecutionRole"
+  assume_role_policy = "${file("${path.module}/ecs-task-execution-role.json")}"
+}
+
+resource "aws_iam_role_policy_attachment" "attach_ecs_policy_to_task_executor" {
+  policy_arn = "${data.aws_iam_policy.ecs_task_execution_policy.arn}"
+  role = "${aws_iam_role.ecs_task_execution_role.name}"
 }
