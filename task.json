@@ -3,7 +3,6 @@
     "name": "${container_name}",
     "image": "${image_uri}",
     "essential": true,
-    "cpu": 0,
     "memoryReservation": 300,
     "logConfiguration": {
       "logDriver": "awslogs",

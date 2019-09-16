@@ -16,7 +16,6 @@ resource "aws_iam_role" "hflow_worker_role" {
   assume_role_policy = "${file("${path.module}/ecs-task-execution-role.json")}"
 }
 
-# attach policies to newly created role
 resource "aws_iam_role_policy_attachment" "attach_ecs_policy_to_worker" {
   policy_arn = "${data.aws_iam_policy.ecs_task_execution_policy.arn}"
   role = "${aws_iam_role.hflow_worker_role.name}"

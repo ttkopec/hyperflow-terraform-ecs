@@ -1,0 +1,23 @@
+exports.containerName = 'string';
+exports.clusterArn = 'string';
+exports.taskArn = '{{DEFAULT_TASK}}';
+exports.subnets = ['string'];
+exports.securityGroups = ['string'];
+exports.influxdbHost = 'string';
+
+exports.options = {
+    storage: 'string',
+    bucket: 'string',
+    prefix: 'string'
+};
+
+// extra labels provided to containers in form of {key: value}
+exports.extraLabels = {
+    experiment: new Date().toISOString(),
+    configId: '{{CONFIG_ID}}'
+};
+
+// task_executable_name : task_definition_name
+exports.tasks_mapping = { {% for task_name, task_def in TASKS_MAPPING.items() %}
+    '{{task_name}}': '{{task_def}}', {% endfor %}
+};

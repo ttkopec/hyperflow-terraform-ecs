@@ -81,6 +81,7 @@ resource "aws_route_table" "hflow_rtb_private" {
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_nat_gateway.hflow_nat.id}"
+//    gateway_id = "${aws_internet_gateway.hflow_igw.id}"
   }
 
   tags = {
@@ -119,8 +120,3 @@ resource "aws_service_discovery_service" "hflow_sd_service" {
 output "subnet" {
   value = "${aws_subnet.hflow_subnet_private.id}"
 }
-
-output "assign_public_ip" {
-  value = "${var.assign_public_ip}"
-}
-

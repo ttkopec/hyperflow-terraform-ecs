@@ -13,7 +13,7 @@ variable "ecs_cluster_name" {
 }
 
 variable "hflow_image_uri" {
-  default = "511281668954.dkr.ecr.eu-central-1.amazonaws.com/hyperflow:0.20"
+  default = "511281668954.dkr.ecr.eu-central-1.amazonaws.com/hyperflow:0.42"
 }
 
 variable "hflow_container_name" {
@@ -28,40 +28,24 @@ variable "hflow_worker_family" {
   default = "hyperflow-worker"
 }
 
-variable "pushgateway_image_uri" {
-  default = "docker.io/prom/pushgateway:latest"
+variable "influx_image_uri" {
+  default = "511281668954.dkr.ecr.eu-central-1.amazonaws.com/influxdb:0.1"
 }
 
-variable "pushgateway_container_name" {
-  default = "pushgateway"
+variable "influx_container_name" {
+  default = "influx"
 }
 
-variable "pushgateway_log_group" {
-  default = "/ecs/pushgateway"
+variable "influx_log_group" {
+  default = "/ecs/influx"
 }
 
-variable "pushgateway_family" {
-  default = "pushgateway"
-}
-
-variable "prometheus_image_uri" {
-  default = "511281668954.dkr.ecr.eu-central-1.amazonaws.com/prometheus:0.2"
-}
-
-variable "prometheus_container_name" {
-  default = "prometheus"
-}
-
-variable "prometheus_log_group" {
-  default = "/ecs/prometheus"
-}
-
-variable "prometheus_family" {
-  default = "prometheus"
+variable "influx_family" {
+  default = "influx"
 }
 
 variable "grafana_image_uri" {
-  default = "511281668954.dkr.ecr.eu-central-1.amazonaws.com/grafana:0.1"
+  default = "grafana/grafana:6.1.6"
 }
 
 variable "grafana_container_name" {

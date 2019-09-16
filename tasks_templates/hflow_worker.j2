@@ -1,0 +1,20 @@
+resource "aws_ecs_task_definition" {{NAME}} {
+  container_definitions = "${data.template_file.task_def_hflow_worker.rendered}"
+  family = "{{NAME}}"
+
+  # enable FARGATE
+  requires_compatibilities = [
+    "FARGATE"
+  ]
+
+  # use awsvpc, required by FARGATE
+  network_mode = "awsvpc"
+
+  # iam
+  task_role_arn = "${aws_iam_role.hflow_worker_role.arn}"
+  execution_role_arn = "${aws_iam_role.hflow_worker_role.arn}"
+
+  # scaling parameters, required by FARGATE
+  cpu = "{{CPU}}"
+  memory = "{{MEMORY}}"
+}
