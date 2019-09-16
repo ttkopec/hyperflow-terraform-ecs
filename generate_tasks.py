@@ -16,7 +16,8 @@ CPU value	Memory value (MiB)
 ref: https://docs.aws.amazon.com/AmazonECS/latest/userguide/task_definition_parameters.html#task_size
 '''
 
-# list of 2 element tuples with all possible variants of hardware configurations: (cpu_value, mem_value)
+# list of 3 element tuples with all possible variants of hardware configurations:
+# (cpu_value, mem_value, weight_of_configuration)
 DEFAULT_TASK_CONFIGS = [
     ('256', '512', 10),
     # ('256', '1024', 10),
@@ -135,7 +136,7 @@ def gen_test(templates_dir, task_configs, out_tasks_filepath):
     configs = []
 
     for name, conf in task_configs.items():
-        cpu, mem = conf
+        cpu, mem, weight = conf
         task_defs.append(task_tmpl.render(NAME=name, CPU=cpu, MEMORY=mem))
         configs.append(name)
 
@@ -155,7 +156,7 @@ def gen_test(templates_dir, task_configs, out_tasks_filepath):
 
 def gen_prod(templates_dir, workflow_filepath, config_list, out_tasks_filepath, database, url):
     """
-    1. fetch data from influx regarding test run
+    1. fetch data from influx related to test run
     2. choose best configuration for each task basing on influx data
     3. generate task definition for each workflow task
     4. generate one hyperflow config
@@ -202,5 +203,5 @@ if __name__ == '__main__':
 
     gen_test('tasks_templates', DEFAULT_TASK_CONFIGS, 'tasks.tf')
 
-    gen_prod('tasks_templates', 'workflow.json', ['var_256_512', 'var_512_1024', 'var_1024_2048'], 'tasks_prod.tf',
-             'hyperflow-database', '172.18.0.4')
+    # gen_prod('tasks_templates', 'workflow.json', ['var_256_512', 'var_512_1024', 'var_1024_2048'], 'tasks_prod.tf',
+    #          'hyperflow-database', '172.18.0.4')

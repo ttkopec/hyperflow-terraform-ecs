@@ -100,22 +100,22 @@ resource "aws_ecs_service" "influx" {
   }
 }
 
-//resource "aws_ecs_service" "grafana" {
-//  name = "grafana"
-//  cluster = "${aws_ecs_cluster.hyperflow_cluster.id}"
-//  task_definition = "${aws_ecs_task_definition.task_grafana.arn}"
-//  desired_count = 1
-//
-//  launch_type = "FARGATE"
-//  platform_version = "LATEST"
-//  scheduling_strategy = "REPLICA"
-//
-//  network_configuration {
-//    subnets = ["${aws_subnet.hflow_subnet_public.id}"]
-//    security_groups = ["${aws_security_group.grafana_sec_group.id}"]
-//    assign_public_ip = true
-//  }
-//}
+resource "aws_ecs_service" "grafana" {
+  name = "grafana"
+  cluster = "${aws_ecs_cluster.hyperflow_cluster.id}"
+  task_definition = "${aws_ecs_task_definition.task_grafana.arn}"
+  desired_count = 1
+
+  launch_type = "FARGATE"
+  platform_version = "LATEST"
+  scheduling_strategy = "REPLICA"
+
+  network_configuration {
+    subnets = ["${aws_subnet.hflow_subnet_public.id}"]
+    security_groups = ["${aws_security_group.grafana_sec_group.id}"]
+    assign_public_ip = true
+  }
+}
 
 output "task_arn" {
   value = "${aws_ecs_task_definition.task_hflow_worker.arn}"
