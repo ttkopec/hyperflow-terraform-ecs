@@ -13,7 +13,7 @@ resource "null_resource" "on_finish" {
 
   # store all configuration details in output.txt file
   provisioner "local-exec" {
-    command = "echo 'containerName=${var.hflow_container_name}\nclusterArn=${aws_ecs_cluster.hyperflow_cluster.arn}\ntaskArn=${aws_ecs_task_definition.task_hflow_worker.arn}\nsubnets=[${aws_subnet.hflow_subnet_private.id}]\nsecurityGroups=[${aws_security_group.hflow_workers_sec_group.id}]' > output.txt"
+    command = "echo 'containerName=${var.hflow_container_name}\nclusterArn=${aws_ecs_cluster.hyperflow_cluster.arn}\nsubnets=[${aws_subnet.hflow_subnet_private.id}]\nsecurityGroups=[${aws_security_group.hflow_workers_sec_group.id}]' > output.txt"
   }
 }
 

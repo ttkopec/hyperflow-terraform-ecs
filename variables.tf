@@ -13,7 +13,7 @@ variable "ecs_cluster_name" {
 }
 
 variable "hflow_image_uri" {
-  default = "511281668954.dkr.ecr.eu-central-1.amazonaws.com/hyperflow:0.42"
+  default = "511281668954.dkr.ecr.eu-central-1.amazonaws.com/hyperflow-ec2:0.4"
 }
 
 variable "hflow_container_name" {
